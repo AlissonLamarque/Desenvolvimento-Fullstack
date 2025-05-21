@@ -36,7 +36,7 @@ router.put('/edit/:id', (req, res) => {
   });
 });
 
-// Excluir usuário
+// Exclusão de usuário
 router.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM USUARIO WHERE ID = ?';

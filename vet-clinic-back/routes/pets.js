@@ -4,10 +4,10 @@ const router = express.Router();
 
 // Cadastro de pet
 router.post('/register', async (req, res) => {
- const { nome, idade, raca, peso } = req.body;
- const query = 'INSERT INTO PET (NOME, IDADE, RACA, PESO) VALUES (?, ?, ?, ?)';
+ const { nome, idade, raca, peso, dono } = req.body;
+ const query = 'INSERT INTO PET (NOME, IDADE, RACA, PESO, DONO) VALUES (?, ?, ?, ?, ?)';
 
- db.query(query, [nome, idade, raca, peso], (err, result) => {
+ db.query(query, [nome, idade, raca, peso, dono], (err, result) => {
     if (err) {
       res.status(500).send('Erro ao registrar pet: ' + err);
     } else {
@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
 router.put('/edit/:id', (req, res) => {
   const { id } = req.params;
   const { nome, idade, raca, peso, versao } = req.body;
-  const query = `UPDATE PET SET NOME = ?, IDADE = ?, RACA = ?, PESO = ?, VERSAO=VERSAO+1 WHERE ID = ? AND VERSAO = ?`;
+  const query = `UPDATE PET SET NOME = ?, IDADE = ?, RACA = ?, PESO = ?, DONO = ?, VERSAO=VERSAO+1 WHERE ID = ? AND VERSAO = ?`;
 
   db.query(query, [nome, idade, raca, peso, versao], (err, result) => {
     if (err) {
@@ -33,7 +33,7 @@ router.put('/edit/:id', (req, res) => {
   });
 });
 
-// Excluir pet
+// Exclusão de pet
 router.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM PET WHERE ID = ?';

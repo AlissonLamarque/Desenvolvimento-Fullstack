@@ -32,7 +32,7 @@ app.post('/register', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const query = 'INSERT INTO USUARIO (nome, email, password) VALUES (?, ?, ?)';
+        const query = 'INSERT INTO USUARIOS (nome, email, password) VALUES (?, ?, ?)';
         db.query(query, [nome, email, hashedPassword], (err, result) => {
             if (err) return res.status(500).json({ message: 'Erro ao cadastrar', error: err });
             res.status(201).json({ message: 'Usuário registrado com sucesso!' });
@@ -42,9 +42,34 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.get('/usuarios', (req, res) => {
+  db.query('SELECT nome, email FROM USUARIOS', (err, results) => {
+    if (err) return res.status(500).json({ message: 'Erro ao buscar usuários' });
+    res.json(results);
+  });
+});
+
+app.post('/petRegister', async (req, res) => {
+    const { nome, idade, raca, peso, dono } = req.body;
+
+    if (!nome || !idade || !raca || !peso || !dono) {
+        return res.status(400).json({ message: 'Campos obrigatórios faltando.' });
+    }
+
+    try {
+        const query = 'INSERT INTO PET (nome, idade, raca, peso, dono) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [nome, idade, raca, peso, dono], (err, result) => {
+            if (err) return res.status(500).json({ message: 'Erro ao cadastrar', error: err });
+            res.status(201).json({ message: 'Pet registrado com sucesso!' });
+        });
+    } catch {
+        res.status(500).json({ message: 'Erro no servidor', error: err.message });
+    }
+});
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    const query = 'SELECT * FROM USUARIO WHERE email = ?';
+    const query = 'SELECT * FROM USUARIOS WHERE email = ?';
 
     db.query(query, [email], async (err, result) => {
         if (err || result.length === 0) return res.status(400).json({

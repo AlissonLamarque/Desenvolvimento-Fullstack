@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 router.post('/register', async (req, res) => {
  const { nome, email, password } = req.body;
  const hashedPassword = await bcrypt.hash(password, 10);
- const query = 'INSERT INTO USUARIO (NOME, EMAIL, PASSWORD) VALUES (?, ?, ?)';
+ const query = 'INSERT INTO USUARIOS (NOME, EMAIL, PASSWORD) VALUES (?, ?, ?)';
 
  db.query(query, [nome, email, hashedPassword], (err, result) => {
     if (err) {
@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
 router.put('/edit/:id', (req, res) => {
   const { id } = req.params;
   const { nome, email, password, versao } = req.body;
-  const query = `UPDATE USUARIO SET NOME = ?, EMAIL = ?, PASSWORD = ?, VERSAO=VERSAO+1 WHERE ID = ? AND VERSAO = ?`;
+  const query = `UPDATE USUARIOS SET NOME = ?, EMAIL = ?, PASSWORD = ?, VERSAO=VERSAO+1 WHERE ID = ? AND VERSAO = ?`;
 
   db.query(query, [nome, email, password, versao], (err, result) => {
     if (err) {
@@ -36,10 +36,10 @@ router.put('/edit/:id', (req, res) => {
   });
 });
 
-// Excluir usuário
+// Exclusão de usuário
 router.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
-  const query = 'DELETE FROM USUARIO WHERE ID = ?';
+  const query = 'DELETE FROM USUARIOS WHERE ID = ?';
 
   db.query(query, [id], (err, result) => {
     if (err) {

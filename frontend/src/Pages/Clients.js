@@ -3,7 +3,7 @@ import axios from 'axios';
 function Clients() {
     const [clients, setClients] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:3000/clients')
+        axios.get('http://localhost:5001/clients')
             .then(response => setClients(response.data))
             .catch(error => console.error(error));
     }, []);

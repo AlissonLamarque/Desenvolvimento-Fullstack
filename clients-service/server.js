@@ -1,7 +1,11 @@
 const express = require('express');
 const pool = require('./db');
 const app = express();
+const cors = require('cors');
+
 app.use(express.json());
+app.use(cors());
+
 app.get('/clients', async (req, res) => {
  const result = await pool.query('SELECT * FROM clients');
  res.json(result.rows);
